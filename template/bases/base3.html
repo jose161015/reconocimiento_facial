@@ -1,0 +1,71 @@
+{% extends 'bases/base.html' %}
+{% block head %}  {% endblock %}
+
+{% block link %}
+
+{% endblock %}
+
+
+{% block body %}
+  <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top m-b-0">
+            <div class="navbar-header"> <a class="navbar-toggle hidden-sm hidden-md hidden-lg "
+                    href="javascript:void(0)" data-toggle="collapse" data-target=".navbar-collapse"><i
+                        class="fa fa-bars"></i></a>
+                <div class="top-left-part"><a class="logo" href="/"><b><img
+                                    {% load static %}
+                                src="{% static 'plugins/images/logo.png'%}" alt="home" /></b><span
+                            class="hidden-xs"><img src="{% static 'plugins/images/reface.png'%}" alt="home" /></span></a>
+                </div>
+                <ul class="nav navbar-top-links navbar-left m-l-20 hidden-xs">
+                    <li>
+                        <form role="search" class="app-search hidden-xs" method="GET" action="{% url 'empleadodetalle'%}">
+                            <label>Buscar empleado por numero de carnet :</label>
+                            <input type="text" name="id" placeholder="Numero de carnet" class="form-control"required="required"><button class="btn btn-success " ><i
+                                    class="fa fa-search"></i></button>
+                                    
+                        </form>
+                        {% if error %}
+                              <div class="alert alert-danger alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss = "alert" aria-label = "Close">
+                                  <span aria-hidden = "true">&times;</span>
+                                </button>
+                                <strong >Error de solicitud : </strong>{{ error }}
+                              </div>
+               			{% endif %}
+                    </li>
+                </ul>
+                <ul class="nav navbar-top-links navbar-right pull-right">
+                    <li>                                            
+                        <a class="profile-pic" href="#"> <b class="hidden-xs">{{user.get_username}}</b> </a>
+                    </li>
+                    <li>                                            
+                        <a class="profile-pic" href="{% url 'logout' %}"> <b class="hidden-xs">Cerrar sesion</b> </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-header -->
+            <!-- /.navbar-top-links -->
+            <!-- /.navbar-static-side -->
+        </nav>
+                <!-- Page Content -->
+        <div id="page-wrapper">
+            <div class="container-fluid">
+
+                <!-- row -->
+                {% block paginas%}
+                    
+
+                {% endblock %}
+
+
+                <!-- row -->
+                
+            </div>
+            <!-- /.container-fluid -->
+            <footer class="footer text-center"> 2021 &copy; Universidad Salvadoreña Alberto Masferrer <a
+                    href="#">USAM</a> </footer>
+        </div>
+        <!-- /#page-wrapper -->
+
+{% endblock %}
