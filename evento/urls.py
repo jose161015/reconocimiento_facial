@@ -8,7 +8,7 @@ urlpatterns = [
     path('editarevento/<int:id>',editarevento,name='editarevento'),
     path('actualizar',actualizarevento,name='actualizar'),
     path('eventorango',eventorango,name='eventorango'),
-    path('eventorangopdf',eventorangopdf,name='eventorangopdf'),
+    #path('eventorangopdf',eventorangopdf,name='eventorangopdf'),
 
 
 ]
