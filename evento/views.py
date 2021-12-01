@@ -2,7 +2,7 @@ from evento.models import CodigoEvento, Evento
 from django.shortcuts import redirect, render,HttpResponse
 from empleado.models import Empleado
 from datetime import date, datetime, timedelta
-from inicio.pdf_utils import render_to_pdf
+
 
 # Create your views here.
 def menu_evento(request):
@@ -76,7 +76,7 @@ def eventorango(request):
         contenido={'registro_rango':registro_rango,'count':registro_rango.count(),'fecha1':f1,'fecha2':f2}
         return render(request,'eventorango.html',contenido)
 
-def eventorangopdf(request):
+"""def eventorangopdf(request):
     if request.method=='GET':
         f1=request.GET['fecha1']
         f2=request.GET['fecha2']
@@ -86,5 +86,5 @@ def eventorangopdf(request):
         registro_rango=Evento.objects.exclude(fecha_inicio__gte=fechasumada).filter(fecha_inicio__gte=f1).order_by('fecha_inicio')
         contenido={'registro_rango':registro_rango,'count':registro_rango.count(),'fecha1':f1,'fecha2':f2}
         pdf=render_to_pdf('evento/eventorangopdf/eventorangopdf.html',contenido)
-    return HttpResponse(pdf,content_type='aplicaction.pdf/pdf')
+    return HttpResponse(pdf,content_type='aplicaction.pdf/pdf')"""
     
