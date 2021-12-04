@@ -1,11 +1,12 @@
 from django.http.response import HttpResponse
 from django.shortcuts import redirect, render
+from django.contrib.auth.decorators import login_required
 from openpyxl.styles.borders import Side
 from openpyxl.styles.fills import PatternFill
 from openpyxl.workbook.workbook import Workbook
 from empleado.models import*
 from horarios.models import *
-from datetime import date, datetime,timedelta
+from datetime import datetime,timedelta
 from openpyxl import Workbook
 from openpyxl.styles import Alignment,Border
 import os,cv2
@@ -13,10 +14,10 @@ import os,cv2
 from marcacion.marcacion import monitor_ausencia,dia, registrarentrada
 from marcacion.models import Ausencias, Marcacion
 # Create your views here.
-def menu_marcaciones(request):
-    
+@login_required
+def menu_marcaciones(request): 
     return render(request,'marcacion/menu_marcaciones/menu_marcaciones.html')
-
+@login_required
 def listar_marcacion(request):
     w = datetime.now()
     fecha = w.strftime('%Y-%m-%d')
@@ -170,7 +171,7 @@ def marcacionmanualentrada(request):
         else:
             msg="Empleado con numero de Carnet",carnet," No existe"                
     return render (request, 'marcacion/menu_marcaciones/menu_marcaciones.html', {'msg':msg})
-
+@login_required
 def entradatardia_o_salidatemprana (request):
     lista={}
     fecha1={}
@@ -180,11 +181,11 @@ def entradatardia_o_salidatemprana (request):
         lista=Marcacion.objects.filter(fecha_marcacion=fecha)
         
     return render(request, 'marcacion/tardiasytemprana/lista_tardia_y_temprana.html',{'lista':lista,'fecha':fecha1})
-
+@login_required
 def justificar(request,id):
     entrada=Marcacion.objects.get(id=id)
     return render(request,'marcacion/justificar/justificar.html',{'entrada':entrada})
-
+@login_required
 def actualizarmarcacion(request):
     if request.method=='POST':
         etardia=request.POST['etardia']
@@ -199,7 +200,7 @@ def actualizarmarcacion(request):
             return redirect('menu_marcaciones')
         else:
             return redirect('justificar/'+id)
-
+@login_required
 def listaausencias(request):
     if request.method=='POST':
         mes=request.POST['mes']
@@ -208,11 +209,11 @@ def listaausencias(request):
         month=mes1.strftime('%m')
         lista=Ausencias.objects.filter(fecha__year=año).filter(fecha__month=month)
     return render(request,'marcacion/listaausencias/listaausencias.html',{'mes':mes1,'lista':lista})
-
+@login_required
 def detalleausencia(request,id):
     ausencia=Ausencias.objects.get(id=id)
     return render(request,'marcacion/detalleausencia/detalleausencia.html',{'au':ausencia})
-
+@login_required
 def actualizarausencia(request):
     if request.method=='POST':
         id=request.POST['id']
@@ -227,6 +228,7 @@ def actualizarausencia(request):
         else:
             return redirect('detalleausencia/'+id)
     return redirect()
+
 def reconocimientofacial(request):
     hora=""
     dataPath = os.getcwd()
@@ -277,6 +279,7 @@ def reconocimientofacial(request):
     cv2.destroyAllWindows()
     return  redirect('menu_marcaciones')
 
+@login_required
 def tardias_rango_fecha(request):
     if request.method=='POST':
         fecha_ini=request.POST['fecha1']
@@ -303,7 +306,7 @@ def tardias_rango_fecha(request):
                     datos.append(lista)
                     
                 return render( request,'marcacion/minutostarde/rangotardia.html',{'datos':datos})
-
+@login_required
 def excelausencias(request):
     if request.method=='GET':
         fecha_ini=request.GET['fecha1']

@@ -1,14 +1,16 @@
 from evento.models import CodigoEvento, Evento
-from django.shortcuts import redirect, render,HttpResponse
+from django.shortcuts import redirect, render
+from django.contrib.auth.decorators import login_required
 from empleado.models import Empleado
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 
 
 # Create your views here.
+@login_required
 def menu_evento(request):
     return render (request, 'evento/menuevento/menuevento.html')
 
-
+@login_required
 def regevento(request):
     lempleado=Empleado.objects.all()
     codigoevento=CodigoEvento.objects.all()
@@ -40,7 +42,7 @@ def regevento(request):
         return render(request,'evento/regevento/regevento.html',{'lempleado':lempleado,'codigoevento':codigoevento,'msg':msg})
     return render(request,'evento/regevento/regevento.html',{'lempleado':lempleado,'codigoevento':codigoevento})
 
-
+@login_required
 def regcodevento(request):
     codevento=CodigoEvento.objects.all()
     if request.method=='POST':
@@ -48,15 +50,16 @@ def regcodevento(request):
         desc=request.POST['desc']
         CodigoEvento.objects.create(cod_evento=cod_evento,descripcion_evento=desc)
     return render (request, 'evento/regcodevento/codevento.html',{'codevento':codevento})
+@login_required
 def listarevento(request):
     eve=Evento.objects.all()
     return render(request, 'evento/listarevento/listarevento.html',{'evento':eve,'count':eve.count()})
-
+@login_required
 def editarevento(request,id):
     event=Evento.objects.filter(id=id).first()
     return render(request,'evento/editarevento/editarevento.html',{'event':event,})
 
-
+@login_required
 def actualizarevento(request):
     if request.method=='POST':
         id=request.POST['id']
@@ -64,7 +67,7 @@ def actualizarevento(request):
         desc=request.POST['desc']
         Evento.objects.filter(id=id).update(autorizado_por=aupor,justificacion=desc)
         return redirect('listarevento')
-
+@login_required
 def eventorango(request):
     if request.method=='GET':
         f1=request.GET['fecha1']
@@ -75,8 +78,8 @@ def eventorango(request):
         registro_rango=Evento.objects.exclude(fecha_inicio__gte=fechasumada).filter(fecha_inicio__gte=f1).order_by('fecha_inicio')
         contenido={'registro_rango':registro_rango,'count':registro_rango.count(),'fecha1':f1,'fecha2':f2}
         return render(request,'eventorango.html',contenido)
-
-"""def eventorangopdf(request):
+"""
+def eventorangopdf(request):
     if request.method=='GET':
         f1=request.GET['fecha1']
         f2=request.GET['fecha2']
@@ -86,5 +89,5 @@ def eventorango(request):
         registro_rango=Evento.objects.exclude(fecha_inicio__gte=fechasumada).filter(fecha_inicio__gte=f1).order_by('fecha_inicio')
         contenido={'registro_rango':registro_rango,'count':registro_rango.count(),'fecha1':f1,'fecha2':f2}
         pdf=render_to_pdf('evento/eventorangopdf/eventorangopdf.html',contenido)
-    return HttpResponse(pdf,content_type='aplicaction.pdf/pdf')"""
-    
+    return HttpResponse(pdf,content_type='aplicaction.pdf/pdf')
+    """

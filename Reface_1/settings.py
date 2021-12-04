@@ -87,9 +87,9 @@ WSGI_APPLICATION = 'Reface_1.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'REFACE_1',
+        'NAME': 'reface_1',
         'USER': 'root',
-        'PASSWORD':'@Lainez982000',
+        'PASSWORD':'@L41n3z982000',
         'PORT':'3306',
         'HOST':'localhost',
     }

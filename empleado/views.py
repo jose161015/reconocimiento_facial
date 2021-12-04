@@ -5,7 +5,6 @@ from empleado.models import Departamento,Ocupacion,Empleado
 from horarios.models import AsigHorario, Turno
 from marcacion.models import*
 from empleado.Registro import entrenar
-import numpy as np
 import os
 
 import cv2
